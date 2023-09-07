@@ -24,12 +24,45 @@ if (checkLower && checkUpper && checkSpecChar && checkNumbers && checkLength >= 
   var upperIndex = Math.floor(Math.random() * upperAlpha.length);
   randUpper = upperAlpha[upperIndex];
   checkLength--;
+
+  var lowercaseCount = Math.floor(checkLength / 2);
   
-  for (var i = 0; i < checkLength; i++) {
+  for (var i = 0; i < lowercaseCount; i++) {
     var lowerIndex = Math.floor(Math.random() * alphabet.length);
     randLower += alphabet[lowerIndex];
   }
-} else {
+
+  checkLength -= lowercaseCount;
+
+  var specCharIndex = Math.floor(Math.random() * specChar.length);
+  randSpecChar = specChar[specCharIndex];
+  checkLength--;
+
+  for (var i = 0; i < checkLength; i++) {
+    var numberIndex = Math.floor(Math.random() * numbers.length);
+    randNumber += numbers[numberIndex];
+  }
+} else if (!checkLower && checkUpper && checkSpecChar && checkNumbers && checkLength >= 8 && checkLength <= 128) {
+  var uppercaseCount = Math.floor(checkLength / 2);
+  
+  for (var i = 0; i < uppercaseCount; i++) {
+    var upperIndex = Math.floor(Math.random() * upperAlpha.length);
+    randUpper += upperAlpha[upperIndex];
+  }
+
+  checkLength -= uppercaseCount;
+
+  var specCharIndex = Math.floor(Math.random() * specChar.length);
+  randSpecChar = specChar[specCharIndex];
+  checkLength--;
+
+  for (var i = 0; i < checkLength; i++) {
+    var numberIndex = Math.floor(Math.random() * numbers.length);
+    randNumber += numbers[numberIndex];
+  }
+} 
+  
+else {
   window.alert("Invalid Response. Make sure to choose a character length from 8 to 128 and to confirm at least one of the prompts to continue.");
 }
 
