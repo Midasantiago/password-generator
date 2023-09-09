@@ -1,72 +1,58 @@
-// Assignment code here
-var alphabet = 'a b c d e f g h i j k l m n o p q r s t u v w x y z'.split(' ');
-console.log(alphabet);
-var upperAlpha = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z'.split(' ');
-console.log(upperAlpha);
-var numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-console.log(numbers);
-var specChar = `! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ { | } ~`.split(' ');
-console.log(specChar);
-
-function generatePassword() {
-  var checkLength = window.prompt("How long would you like your password to be? (8-128 characters)")
-  var checkLower = window.confirm("Would you like lowercase letters in your password?");
-  var checkUpper = window.confirm("Would you like  uppercase letters in your password?");
-  var checkSpecChar = window.confirm("Would you like a special character in your password?");
-  var checkNumbers = window.confirm("Would you like any numbers in your password?");
-
-  var randUpper = "";
-  var randLower = "";
-  var randSpecChar = "";
-  var randNumber = "";
-
-if (checkLower && checkUpper && checkSpecChar && checkNumbers && checkLength >= 8 && checkLength <= 128) {
-  var upperIndex = Math.floor(Math.random() * upperAlpha.length);
-  randUpper = upperAlpha[upperIndex];
-  checkLength--;
-
-  var lowercaseCount = Math.floor(checkLength / 2);
-  
-  for (var i = 0; i < lowercaseCount; i++) {
-    var lowerIndex = Math.floor(Math.random() * alphabet.length);
-    randLower += alphabet[lowerIndex];
-  }
-
-  checkLength -= lowercaseCount;
-
-  var specCharIndex = Math.floor(Math.random() * specChar.length);
-  randSpecChar = specChar[specCharIndex];
-  checkLength--;
-
-  for (var i = 0; i < checkLength; i++) {
-    var numberIndex = Math.floor(Math.random() * numbers.length);
-    randNumber += numbers[numberIndex];
-  }
-} else if (!checkLower && checkUpper && checkSpecChar && checkNumbers && checkLength >= 8 && checkLength <= 128) {
-  var uppercaseCount = Math.floor(checkLength / 2);
-  
-  for (var i = 0; i < uppercaseCount; i++) {
-    var upperIndex = Math.floor(Math.random() * upperAlpha.length);
-    randUpper += upperAlpha[upperIndex];
-  }
-
-  checkLength -= uppercaseCount;
-
-  var specCharIndex = Math.floor(Math.random() * specChar.length);
-  randSpecChar = specChar[specCharIndex];
-  checkLength--;
-
-  for (var i = 0; i < checkLength; i++) {
-    var numberIndex = Math.floor(Math.random() * numbers.length);
-    randNumber += numbers[numberIndex];
-  }
-} 
-  
-else {
-  window.alert("Invalid Response. Make sure to choose a character length from 8 to 128 and to confirm at least one of the prompts to continue.");
+// Object containing all characters divided into each criteria for their corresponding comfirm windows
+var passChar = {
+  lowerAlpha : ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
+  upperAlhpa : ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
+  numbers : ['1','2','3','4','5','6','7','8','9','0'],
+  specChar : ['!', '#', '$', '%', '^', '&', '*', '(', ')', '+', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '_', '|', '~', ',']
 }
 
-  var password = randUpper + randLower + randSpecChar + randNumber;
+// Main function that generates random password based on user input
+function generatePassword() {
+  // Variables to contain the user's inputs
+  var checkLength = window.prompt("How long would you like your password to be? (8-128 characters)");
+  var checkLower = window.confirm("Would you like lowercase letters in your password?");
+  var checkUpper = window.confirm("Would you like uppercase letters in your password?");
+  var checkNumbers = window.confirm("Would you like any numbers in your password?");
+  var checkSpecChar = window.confirm("Would you like a special character in your password?");
+
+  // Empty string that will be filled by random characters generated later in the function
+  var password = "";
+
+  // Empty array that will hold all the characters that the user wants in their password
+  var userPreference = [];
+
+  // Checks wether the user has inputted a valid character length and has chosen at least one of the confirm prompts
+  if (
+    (checkLength < 8 || checkLength > 128) ||
+    (!checkLower && !checkUpper && !checkSpecChar && !checkNumbers)
+  ) {
+    return window.alert("Invalid Response: Make sure to choose a character length from 8 to 128 or confirm at least one of the prompts to continue.");
+  }
+
+  // Checks wether they confirmed having the corresponding criteria in their password and adds that entire array into the userPreference array
+  if (checkLower) {
+    userPreference = userPreference.concat(passChar.lowerAlpha);
+  }
+
+  if (checkUpper) {
+    userPreference = userPreference.concat(passChar.upperAlhpa);
+  }
+
+  if (checkNumbers) {
+    userPreference = userPreference.concat(passChar.numbers);
+  }
+
+  if (checkSpecChar) {
+    userPreference = userPreference.concat(passChar.specChar);
+  }
+
+  // Iterates through the user inputted length and adds a random character from the userPreference array until it reaches that length
+  for (var i = 0; i < checkLength; i++) {
+    var index = Math.floor(Math.random() * userPreference.length);
+    password += userPreference[index];
+  }
+
+  // Outputs the password string to be used in the writePassword function
   return password; 
 }
 
